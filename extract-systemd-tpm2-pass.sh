@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 apt -y install xxd jq tpm2-tools &> /dev/null
 luks=/dev/disk/by-partlabel/r
 json=$(for i in {0..31}; do cryptsetup token export --token-id "$i" "$luks" 2>/dev/null; done | jq -c 'select(.type=="systemd-tpm2")')
