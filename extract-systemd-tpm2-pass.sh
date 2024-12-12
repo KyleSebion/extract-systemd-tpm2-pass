@@ -22,4 +22,4 @@ luksPass=$(tpm2_unseal -p session:pol.ctx -c key.ctx | base64)
 tpm2_flushcontext pol.ctx
 popd &> /dev/null
 rm -r "$d"
-echo "LUKS password for '$luks' based on the systemd-tpm2 tpm2-blob: $luksPass"
+test -n "$luksPass" && echo "LUKS password for '$luks' based on the systemd-tpm2 tpm2-blob: $luksPass"
