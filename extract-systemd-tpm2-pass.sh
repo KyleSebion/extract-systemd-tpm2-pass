@@ -3,7 +3,7 @@ luks=/dev/disk/by-partlabel/r
 if test -n "$EXTRACT_SYSTEMD_TPM2_PASS_LUKS_VOL"; then luks="$EXTRACT_SYSTEMD_TPM2_PASS_LUKS_VOL"; fi
 outOnlyIfV=/dev/null
 if test "$EXTRACT_SYSTEMD_TPM2_PASS_VERBOSE" = 'y'; then tpm2V=-V rmV=-v outOnlyIfV=/dev/stdout; fi
-apt -y install xxd jq tpm2-tools &> /dev/null
+apt -y install xxd jq tpm2-tools cryptsetup &> /dev/null
 json=$(for i in {0..31}; do cryptsetup token export --token-id "$i" "$luks" 2> /dev/null; done | jq -c 'select(.type=="systemd-tpm2")')
 blob=$(echo "$json" | jq -r '.["tpm2-blob"]' | base64 -d | xxd -p | tr -d ' \n')
 alg=$(echo "$json" | jq -r '.["tpm2-primary-alg"]')
